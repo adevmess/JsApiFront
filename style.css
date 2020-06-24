@@ -1,0 +1,110 @@
+.card-body {
+  overflow: hidden;
+}
+
+.navbar-banner {
+  width: 100%;
+  height: 12rem;
+
+  background: url("images/vcam_plus.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.navbar-brand,
+.nav-link {
+  font-weight: 900;
+  font-size: 2rem;
+}
+
+.title-Carousel > h2 {
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.title-Carousel > h3 {
+  font-size: 2rem;
+  padding-top: 2rem;
+}
+
+.card {
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 12rem;
+  color: white;
+  font-weight: 900;
+  background: url("images/vcam_plus.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+}
+
+.btn {
+  margin-bottom: 2.5rem;
+  margin-top: 1rem;
+}
+
+#selectLentille {
+  width: 32%;
+}
+
+.form-group-Quantite {
+  width: 4rem;
+}
+
+/* ********** large devices ******** */
+
+@media (max-width: 991px) {
+  .title-Carousel > h3 {
+    font-size: 1.5rem;
+  }
+
+  #selectLentille {
+    width: 43%;
+  }
+}
+
+/* ************* Small devices ******** */
+
+@media (max-width: 767px) {
+  .title-Carousel > h3 {
+    font-size: 1.5rem;
+  }
+
+  #selectLentille {
+    min-width: 60%;
+  }
+}
+
+/* **********Extra Small devices ******** */
+
+@media (max-width: 575px) {
+  .navbar-banner {
+    width: 100%;
+    height: 12rem;
+
+    background: url("images/vcam_plus.jpg") no-repeat left center fixed;
+    background-size: cover;
+  }
+
+  .title-Carousel > h3 {
+    font-size: 1rem;
+    padding-top: 2rem;
+  }
+
+  #selectLentille {
+    width: 17.5rem;
+    overflow: hidden;
+  }
+}
