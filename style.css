@@ -47,9 +47,10 @@ footer {
   height: 100%;
 }
 
-.btn {
+.btn  {
   margin-bottom: 2.5rem;
   margin-top: 1rem;
+  color: #fff;
 }
 
 #selectLentille {
