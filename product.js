@@ -20,6 +20,9 @@ const currentUrl = new URLSearchParams(window.location.search);
 const id = currentUrl.get("id"); //on recupere la valeur associé a ce parametre (id)
 console.log(id);
 
+/****function recup object via api */
+
+
 
 const getDatasCamera = async function () {
   try {
@@ -29,16 +32,23 @@ const getDatasCamera = async function () {
       console.log("c'est ok");
       console.log(data); // on renvoie un  resultat de l'objet reçu
 
-      //puis on parametre notre fonction de creation d'elements qui sera utilisé par la boucle for
+      /****function recup object via api */
 
-      function templateProduct() {
+      let product = function (data) {
+        return oneCamera = data.find(camera => camera._id === id);
+        //renvoi objet correspondant a l'id
+      }
+      product(data)
+      console.log(oneCamera);
+
+      function createtemplateProduct(oneCamera) {
 
         let globalSection = document.querySelector("section");
 
 
         let generalCard = document.createElement("div");
         generalCard.className = "card mb-3 shadow ";
-        generalCard.innerHTML = `<img src ="${data.imageUrl}" alt="camera" class="card-img">`;
+        generalCard.innerHTML = `<img src ="${oneCamera.imageUrl}" alt="camera" class="card-img">`;
         globalSection.appendChild(generalCard);
 
         let cardBody = document.createElement("div");
@@ -47,12 +57,12 @@ const getDatasCamera = async function () {
 
         let cardTitle = document.createElement("h2");
         cardTitle.className = "card-title";
-        cardTitle.textContent = data.name;
+        cardTitle.textContent = oneCamera.name;
         cardBody.appendChild(cardTitle);
 
         let descriptionCam = document.createElement("p");
         descriptionCam.className = "card-text";
-        descriptionCam.textContent = data.description;
+        descriptionCam.textContent = oneCamera.description;
         cardBody.appendChild(descriptionCam);
 
         let choiceLense = document.createElement("div");
@@ -67,8 +77,8 @@ const getDatasCamera = async function () {
         let formLenseSelect = document.createElement("select");
         formLenseSelect.className = "custom-select my-1 mr-sm-2";
         formLenseSelect.innerHTML = ` <option selected>Lentille d'origine</option> < option value = '1' > Anastigmat spécial f / 3.5, 50 mm < /option> <option value = '2' > Anastigmat f / 4.5, 51 mm < /option> <
-  option value = '3' > Anastigmat spécial f / 6.3, 130 mm < /option>"
-  choiceLense.appendChild(formLenseSelect)`;
+        option value = '3' > Anastigmat spécial f / 6.3, 130 mm < /option>"
+        choiceLense.appendChild(formLenseSelect)`;
         choiceLense.appendChild(formLenseSelect);
 
         let choiceQuantity = document.createElement("div");
@@ -79,7 +89,7 @@ const getDatasCamera = async function () {
 
         let choiceQuantitySelect = document.createElement("select");
         choiceQuantitySelect.className = "custom-select  my-1 mr-sm-2"
-        choiceQuantitySelect.innerHTML = `<option value="1">data.value</option><option value="2">2</option><option value="3">3</option>`;
+        choiceQuantitySelect.innerHTML = `<option value="1">oneCamera.value</option><option value="2">2</option><option value="3">3</option>`;
         choiceQuantity.appendChild(choiceQuantitySelect);
 
         let PriceAndButton = document.createElement("div");
@@ -88,16 +98,16 @@ const getDatasCamera = async function () {
 
         let prix = document.createElement("h3");
         prix.className = "price";
-        prix.textContent = data.price / 100 + "€";
+        prix.textContent = oneCamera.price / 100 + "€";
         cardBody.appendChild(prix);
 
         let btnContinuer = document.createElement('div')
         btnContinuer.className = "btn btn-dark  ";
-        btnContinuer.innerHTML = `<a href="resumePanier.html?id=${data._id}">Ajouter au panier</a>`;
+        btnContinuer.innerHTML = `<a href="resumePanier.html?id=${oneCamera._id}">Ajouter au panier</a>`;
         cardBody.appendChild(btnContinuer);
         console.log(btnContinuer); //a enlever 
       }
-      templateProduct(data)
+      createtemplateProduct(oneCamera)
 
 
       // Notre boucle for permet d'iterer sur chaque produit et de creer les elements correspondants en utilsant la fonction precedement definie
