@@ -1,7 +1,7 @@
 //connexion a l'API
 const apiUrl = "http://localhost:3000/api/cameras";
 
-const getDataCamera = async function () {
+const getDatasCamera = async function () {
   try {
     let response = await fetch(apiUrl);
     if (response.ok) { //verifie si statut de type 200 ou autre
@@ -10,7 +10,7 @@ const getDataCamera = async function () {
       console.log(data); // on renvoie un  resultat de l'objet reçu
 
       //puis on parametre notre fonction de creation d'elements qui sera utilisé par la boucle for
-      function createNewBloc(data) {
+      function createtemplateProducts(data) {
 
         let globalSection = document.getElementById("section");
 
@@ -65,10 +65,11 @@ const getDataCamera = async function () {
         subDivCol3.appendChild(btnContinuer);
         console.log(btnContinuer); //a enlever 
 
-      } // Notre boucle for permet d'iterer sur chaque produit et de creer les elements correspondants en utilsant la fonction precedement definie
+      }
+      // Notre boucle for permet d'iterer sur chaque produit et de creer les elements correspondants en utilsant la fonction precedement definie
       for (let i = 0; i < data.length; i++) {
         console.log(data);
-        createNewBloc(data[i]);
+        createtemplateProducts(data[i]);
       }
     } // else permet de renvoyer le code erreur
     else {
@@ -78,4 +79,4 @@ const getDataCamera = async function () {
     console.log(e) //le console.log de (e) affiche l'erreur en question
   }
 }
-getDataCamera();
+getDatasCamera();
