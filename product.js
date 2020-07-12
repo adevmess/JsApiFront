@@ -23,13 +23,13 @@ const getDatasCamera = async function () {
       /****function recup object dans le array  */
       let product = function (data) {
         return oneCamera = data.find(camera => camera._id === id);
-        //renvoi objet correspondant a l'id
+        //renvoi l'objet qui contient comme valeur l'id courant
       }
       product(data)
       console.log(oneCamera);
 
 
-      //*****TEmplate pour chaque produit*** */
+      //*****Template pour chaque produit*** */
       function createtemplateProduct(oneCamera) {
 
         let globalSection = document.querySelector("section");
@@ -45,7 +45,7 @@ const getDatasCamera = async function () {
         generalCard.appendChild(cardBody);
 
         let cardTitle = document.createElement("h2");
-        cardTitle.className = "card-title";
+        cardTitle.id = "card-title";
         cardTitle.textContent = oneCamera.name;
         cardBody.appendChild(cardTitle);
 
@@ -86,13 +86,14 @@ const getDatasCamera = async function () {
 
         let choiceQuantity = document.createElement("div");
         choiceQuantity.className = "form-group-Quantite mt-3";
+        choiceQuantity.id = "productQuantity";
         choiceQuantity.innerHTML = `<label for="q  ">Quantité: </label>`;
         cardBody.appendChild(choiceQuantity);
 
 
         let choiceQuantitySelect = document.createElement("select");
-        choiceQuantitySelect.className = "custom-select  my-1 mr-sm-2"
-        choiceQuantitySelect.innerHTML = `<option value="1">1</option><option value="2">2</option><option value="3">3</option>`;
+        choiceQuantitySelect.className = "custom-select quantity  my-1 mr-sm-2"
+        choiceQuantitySelect.innerHTML = `<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>`;
         choiceQuantity.appendChild(choiceQuantitySelect);
 
         let PriceAndButton = document.createElement("div");
@@ -101,12 +102,14 @@ const getDatasCamera = async function () {
 
         let prix = document.createElement("h3");
         prix.className = " my-auto text-center price";
+        prix.id = " priceOfProduct";
         prix.textContent = oneCamera.price / 100 + "€";
         PriceAndButton.appendChild(prix);
 
         let btnContinuer = document.createElement('div')
-        btnContinuer.className = "   btn btn-dark ";
-        btnContinuer.innerHTML = `<a href="resumePanier.html?id=${oneCamera._id}">Ajouter au panier</a>`;
+        btnContinuer.className = "btn btn-dark ";
+        btnContinuer.id = "productId ";
+        btnContinuer.innerHTML = `<a href="cart.html?id=${oneCamera._id}">Ajouter au panier</a>`;
         PriceAndButton.appendChild(btnContinuer);
         console.log(btnContinuer); //a enlever 
       }
@@ -123,3 +126,8 @@ const getDatasCamera = async function () {
   }
 }
 getDatasCamera();
+
+
+// ********fonction panier*********//
+
+// ********localStorage*********//

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orinoco</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/cadi ORI.svg">
+  <!-- BootstrapCSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- customStyles  -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- globaContainer -->
+  <div class="container-fluid">
+
+    <!-- header  -->
+    <header class="row header ">
+      <nav class="col navbar navbar-expand navbar-dark navbar-banner">
+        <h1><a href="index.html" class="navbar-brand">Orinoco</a></h1>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link " href="#">Panier</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="title-Carousel text-center font-weight-bold my-5 ">
+      <h2>L'expertise d'Orinoco à vôtre service !</h2>
+      <h3>Dernière étape...<br></h3>
+    </div>
+    <!-- content  -->
+    <section class="container-sm ">
+
+
+
+      <!-- cards  -->
+      <div class="card-resumePanier mb-3 shadow ">
+        <div class="card-body p-0">
+          <h2 class="card-title text-center">Récapitulatif de vôtre commande</h2>
+          <!-- <p class="card-text"> -->
+          <div class="col my-auto p-0  text-center">
+            <!-- recapitulatif -->
+
+            <div class="table-responsive mb-5">
+              <table id="productResume" class="table">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Produit</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Prix par Produit</th>
+                  </tr>
+                </thead>
+                <tbody class="table-secondary">
+                  <!-- //template cart.js// -->
+
+
+                  <tr>
+                    <th id="totalCartPrice">Total : 0 € </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- contact -->
+            <div class="bloc l-bloc">
+              <div class="container bloc-lg">
+                <div class="contact row">
+                  <div class="contact col-sm-12">
+                    <h2>Vos informations de livraison</h2>
+                    <div class="form-group mt-5">
+                      <label for="nom">Nom</label>
+                      <input type="text" class="form-control" id="name" placeholder="Mess" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="nom"> Prénom</label>
+                      <input type="text" class="form-control" id="surname" placeholder="Ahmed" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="adresse"> Adresse</label>
+                      <input type="text" class="form-control" id="address" placeholder="2,Rue du Développement"
+                        required>
+                    </div>
+                    <div class="form-group">
+                      <label for="ville">ville</label>
+                      <input type="text" class="form-control" id="city" placeholder="Paris" required>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-group">
+                        <label for="email">email</label>
+                        <input type="email" class="form-control" id="email" placeholder="adevmess@gmail.com" required>
+                      </div>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- contact END -->
+            <h3>410€</h3>
+            <a href="confirmation.html" class="btn btn-success">Commander</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer mt-5">
+      <h2>Orinoco</h2>
+    </footer>
+
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"></script>
+
+    <!-- js perso  -->
+    <script src="cart.js"></script>
+</body>
+
+</html>
