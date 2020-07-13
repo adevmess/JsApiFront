@@ -21,23 +21,27 @@ const getDatasCamera = async function () {
 
 
       /****function recup object dans le array  */
+      //renvoi l'objet qui contient comme valeur l'id courant
       let product = function (data) {
         return oneCamera = data.find(camera => camera._id === id);
-        //renvoi l'objet qui contient comme valeur l'id courant
+
       }
       product(data)
       console.log(oneCamera);
 
+      // notre objet camera cloné en local ( voir response.clone())
+      let cloneOneCamera = Object.assign({}, oneCamera);
+      console.log(cloneOneCamera);
 
       //*****Template pour chaque produit*** */
-      function createtemplateProduct(oneCamera) {
+      function createtemplateProduct(cloneOneCamera) {
 
         let globalSection = document.querySelector("section");
 
 
         let generalCard = document.createElement("div");
-        generalCard.className = "card mb-3 shadow ";
-        generalCard.innerHTML = `<img src ="${oneCamera.imageUrl}" alt="camera" class="card-img">`;
+        generalCard.className = "card mb-3 shadow";
+        generalCard.innerHTML = `<img src ="${cloneOneCamera.imageUrl}" alt="camera" class="card-img">`;
         globalSection.appendChild(generalCard);
 
         let cardBody = document.createElement("div");
@@ -46,16 +50,16 @@ const getDatasCamera = async function () {
 
         let cardTitle = document.createElement("h2");
         cardTitle.id = "card-title";
-        cardTitle.textContent = oneCamera.name;
+        cardTitle.textContent = cloneOneCamera.name;
         cardBody.appendChild(cardTitle);
 
         let descriptionCam = document.createElement("p");
         descriptionCam.className = "card-text";
-        descriptionCam.textContent = oneCamera.description;
+        descriptionCam.textContent = cloneOneCamera.description;
         cardBody.appendChild(descriptionCam);
 
         let choiceLense = document.createElement("div");
-        choiceLense.className = "form-group mt-5 ";
+        choiceLense.className = "form-group mt-5";
         choiceLense.innerHTML = "<label for='selectLentille'>Choisir le type de lentille :</label>";
         cardBody.appendChild(choiceLense);
 
@@ -66,14 +70,14 @@ const getDatasCamera = async function () {
 
 
         let formLenseSelect = document.createElement("select");
-        formLenseSelect.className = " choiceLenses custom-select my-1 mr-sm-2";
-        formLenseSelect.innerHTML += " <option 'selected'>Lentille d'origine</option>";
+        formLenseSelect.className = "choiceLenses custom-select my-1 mr-sm-2";
+        formLenseSelect.innerHTML += "<option 'selected'>Lentille d'origine</option>";
         choiceLense.appendChild(formLenseSelect);
 
 
         //****fonction display choix lentiles  */
-        let optionSelected = function (oneCamera) {
-          let lenses = oneCamera.lenses;
+        let optionSelected = function (cloneOneCamera) {
+          let lenses = cloneOneCamera.lenses;
           for (let i = 0; i < lenses.length; i++) {
             console.log(lenses[i]);
             let option = document.createElement("option");
@@ -82,12 +86,12 @@ const getDatasCamera = async function () {
 
           }
         }
-        optionSelected(oneCamera)
+        optionSelected(cloneOneCamera)
 
         let choiceQuantity = document.createElement("div");
         choiceQuantity.className = "form-group-Quantite mt-3";
         choiceQuantity.id = "productQuantity";
-        choiceQuantity.innerHTML = `<label for="q  ">Quantité: </label>`;
+        choiceQuantity.innerHTML = `<label for="q">Quantité: </label>`;
         cardBody.appendChild(choiceQuantity);
 
 
@@ -97,21 +101,24 @@ const getDatasCamera = async function () {
         choiceQuantity.appendChild(choiceQuantitySelect);
 
         let PriceAndButton = document.createElement("div");
-        PriceAndButton.className = " my-auto text-center ";
+        PriceAndButton.className = "my-auto text-center";
         cardBody.appendChild(PriceAndButton);
 
         let prix = document.createElement("h3");
-        prix.className = " my-auto text-center price";
-        prix.id = " priceOfProduct";
-        prix.textContent = oneCamera.price / 100 + "€";
+        prix.className = "my-auto text-center price";
+        prix.id = "priceOfProduct";
+        prix.textContent = cloneOneCamera.price / 100 + "€";
         PriceAndButton.appendChild(prix);
 
-        let btnContinuer = document.createElement('div')
-        btnContinuer.className = "btn btn-dark ";
-        btnContinuer.id = "productId ";
-        btnContinuer.innerHTML = `<a href="cart.html?id=${oneCamera._id}">Ajouter au panier</a>`;
-        PriceAndButton.appendChild(btnContinuer);
-        console.log(btnContinuer); //a enlever 
+        let btnAddToCart = document.createElement('button')
+        btnAddToCart.className = "btn btn-dark";
+        btnAddToCart.id = "productId";
+        btnAddToCart.innerHTML = `<a href="#?id=${cloneOneCamera._id}">Ajouter au panier</a>`;
+        PriceAndButton.appendChild(btnAddToCart);
+
+        cartAndLocalStorageProduct();
+
+
       }
       createtemplateProduct(oneCamera)
 
@@ -126,6 +133,16 @@ const getDatasCamera = async function () {
   }
 }
 getDatasCamera();
+
+
+let cartAndLocalStorageProduct = function () {
+  let btnAddCart = document.querySelector("#productId");
+  btnAddCart.addEventListener("click", function () {
+    alert("salut");
+
+
+  })
+}
 
 
 // ********fonction panier*********//

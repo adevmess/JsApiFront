@@ -15,23 +15,23 @@ const getDatasCamera = async function () {
         let globalSection = document.getElementById("section");
 
         let generalCard = document.createElement("div");
-        generalCard.className = "card mb-3 shadow ";
+        generalCard.className = "card mb-3 shadow";
         globalSection.appendChild(generalCard);
 
 
         let subDivRow = document.createElement("div");
-        subDivRow.className = "row no-gutters ";
+        subDivRow.className = "row no-gutters";
         generalCard.appendChild(subDivRow);
 
 
         let subDivCol1 = document.createElement("div");
-        subDivCol1.className = "col-lg-4 ";
+        subDivCol1.className = "col-lg-4";
         subDivCol1.innerHTML = `<img src ="${data.imageUrl}" alt="camera" class="card-img">`;
         subDivRow.appendChild(subDivCol1);
 
 
         let subDivCol2 = document.createElement("div");
-        subDivCol2.className = "col-lg-5 ";
+        subDivCol2.className = "col-lg-5";
         subDivRow.appendChild(subDivCol2);
 
         let cardBody = document.createElement("div");
@@ -40,6 +40,7 @@ const getDatasCamera = async function () {
 
         let cardTitle = document.createElement("h2");
         cardTitle.className = "card-title";
+        cardTitle.Id = "car";
         cardBody.textContent = data.name;
         subDivCol2.appendChild(cardTitle);
 
@@ -51,7 +52,7 @@ const getDatasCamera = async function () {
 
 
         let subDivCol3 = document.createElement("div");
-        subDivCol3.className = "col-lg-3 my-auto text-center ";
+        subDivCol3.className = "col-lg-3 my-auto text-center";
         subDivRow.appendChild(subDivCol3);
 
         let prix = document.createElement("h3");
@@ -60,7 +61,7 @@ const getDatasCamera = async function () {
         subDivCol3.appendChild(prix);
 
         let btnContinuer = document.createElement('div')
-        btnContinuer.className = "btn btn-dark  ";
+        btnContinuer.className = "btn btn-dark";
         btnContinuer.innerHTML = `<a href="product.html?id=${data._id}">Continuer</a>`;
         subDivCol3.appendChild(btnContinuer);
         console.log(btnContinuer); //a enlever 
@@ -79,4 +80,5 @@ const getDatasCamera = async function () {
     console.log(e) //le console.log de (e) affiche l'erreur en question
   }
 }
+
 getDatasCamera();

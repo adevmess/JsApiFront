@@ -1,8 +1,6 @@
 // window.onload = function () {
-//   if (typeof (Storage) !== 'undefined') {
+//   if (typeof (localStorage) !== 'undefined') {
 //     console.log("localStorage dispo")
-
-//     localStorage.removeItem("item")
 
 
 //   } else
