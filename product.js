@@ -60,6 +60,7 @@ const getDatasCamera = async function () {
 
         let choiceLense = document.createElement("div");
         choiceLense.className = "form-group mt-5";
+        choiceLense.id = "optionProd";
         choiceLense.innerHTML = "<label for='selectLentille'>Choisir le type de lentille :</label>";
         cardBody.appendChild(choiceLense);
 
@@ -82,8 +83,6 @@ const getDatasCamera = async function () {
             console.log(lenses[i]);
             let option = document.createElement("option");
             formLenseSelect.innerHTML += `<option>${lenses[i]}</option>`;
-
-
           }
         }
         optionSelected(cloneOneCamera)
@@ -137,14 +136,49 @@ getDatasCamera();
 
 let cartAndLocalStorageProduct = function () {
   let btnAddCart = document.querySelector("#productId");
-  btnAddCart.addEventListener("click", function () {
-    alert("salut");
+  btnAddCart.addEventListener("click", function (e) {
+    //empeche le rafraichissement dans la page
+    e.preventDefault()
+    // recuperation des infos du produit
+    let name = document.querySelector("#card-title").textContent;
+    let price = document.querySelector("#priceOfProduct").textContent;
+    let count = parseInt(document.querySelector("#productQuantity").children[1].selectedOptions[0].value, 10);
+    let idProduct = id;
+
+    let options = document.querySelector("#optionProd").children[2].selectedOptions[0].value;
+
+    let cart = [];
 
 
+    //******creation classe LineCart et ses methodes******
+    let Item = function (name, price, count, idProduct, options) {
+
+      this.name = name;
+      this.price = price;
+      this.count = count;
+      this.idProduct = idProduct;
+      this.options = options;
+    };
+
+    //ajout d'un objet item au panier
+    function addItemToCart(name, price, count, idProduct, options) {
+      for (let i in cart) {
+        if (cart[i].name == name) {
+          cart[i].count += count;
+          return
+        }
+      }
+      let item = new Item(name, price, count, idProduct, options);
+      cart.push(item);
+      saveCart();
+    }
+    //enregistre dans le localStorage
+    function saveCart() {
+      localStorage.setItem("shoppingCart", JSON.stringify(cart));
+    }
+    addItemToCart(name, price, count, idProduct, options)
+    console.log(cart)
   })
+
+
 }
-
-
-// ********fonction panier*********//
-
-// ********localStorage*********//
