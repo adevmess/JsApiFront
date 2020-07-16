@@ -136,49 +136,71 @@ getDatasCamera();
 
 let cartAndLocalStorageProduct = function () {
   let btnAddCart = document.querySelector("#productId");
+  // recuperation des infos du produit
+  let name = document.querySelector("#card-title").textContent;
+  let price = document.querySelector("#priceOfProduct").textContent;
+  let opt = document.querySelector("#productQuantity").children[1];
+  // console.log(count);
+  let idProduct = id;
+
+  let options = document.querySelector("#optionProd").children[2].selectedOptions[0].value;
+
+  let cart = [];
+
+  //******creation classe LineCart et ses methodes******
+  let Item = function (name, price, count, idProduct, options) {
+
+    this.name = name;
+    this.price = price;
+    this.count = count;
+    this.idProduct = idProduct;
+    this.options = options;
+  };
+  //function de recuperation du localStorage
+  function loadCart() {
+    if (cart) {
+      cart = JSON.parse(localStorage.getItem("shoppingCart"));
+    }
+  }
+  loadCart();
+
+  //function d'enregistrement dans le localStorage
+  function saveCart() {
+    localStorage.setItem("shoppingCart", JSON.stringify(cart));
+  }
+
+  //evenement au clic sur "ajouter au panier"
   btnAddCart.addEventListener("click", function (e) {
     //empeche le rafraichissement dans la page
     e.preventDefault()
-    // recuperation des infos du produit
-    let name = document.querySelector("#card-title").textContent;
-    let price = document.querySelector("#priceOfProduct").textContent;
-    let count = parseInt(document.querySelector("#productQuantity").children[1].selectedOptions[0].value, 10);
-    let idProduct = id;
 
-    let options = document.querySelector("#optionProd").children[2].selectedOptions[0].value;
+    // recupération de la valeur courane du select 
+    let count = parseInt(opt.selectedOptions[0].value, 10);
 
-    let cart = [];
-
-
-    //******creation classe LineCart et ses methodes******
-    let Item = function (name, price, count, idProduct, options) {
-
-      this.name = name;
-      this.price = price;
-      this.count = count;
-      this.idProduct = idProduct;
-      this.options = options;
-    };
 
     //ajout d'un objet item au panier
     function addItemToCart(name, price, count, idProduct, options) {
+
       for (let i in cart) {
-        if (cart[i].name == name) {
+        if (cart[i].idProduct == idProduct) {
           cart[i].count += count;
-          return
+
+          console.log("i" + cart[i].count);
+          console.log("count" + count);
+          alert("produit ajouté au panier !")
+          saveCart()
+          return; // on sort sans cree de nouvelleobjet (on incremente seulement)
         }
       }
+
       let item = new Item(name, price, count, idProduct, options);
       cart.push(item);
+      alert("produit ajouté au panier !")
       saveCart();
-    }
-    //enregistre dans le localStorage
-    function saveCart() {
-      localStorage.setItem("shoppingCart", JSON.stringify(cart));
+
     }
     addItemToCart(name, price, count, idProduct, options)
     console.log(cart)
+    saveCart();
   })
-
-
 }
