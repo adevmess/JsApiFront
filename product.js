@@ -115,7 +115,7 @@ const getDatasCamera = async function () {
         btnAddToCart.innerHTML = `<a href="#?id=${cloneOneCamera._id}">Ajouter au panier</a>`;
         PriceAndButton.appendChild(btnAddToCart);
 
-        cartAndLocalStorageProduct();
+        StorageProduct();
 
 
       }
@@ -134,18 +134,29 @@ const getDatasCamera = async function () {
 getDatasCamera();
 
 
-let cartAndLocalStorageProduct = function () {
+let StorageProduct = function () {
   let btnAddCart = document.querySelector("#productId");
   // recuperation des infos du produit
   let name = document.querySelector("#card-title").textContent;
-  let price = document.querySelector("#priceOfProduct").textContent;
+  let priceString = document.querySelector("#priceOfProduct").textContent;
+  let pr = (priceString.substring(0, priceString.length - 1));
+  let price = parseInt(pr, 10);
   let opt = document.querySelector("#productQuantity").children[1];
-  // console.log(count);
+  console.log("voici le prix :" + price);
+  console.log(typeof (price))
   let idProduct = id;
 
   let options = document.querySelector("#optionProd").children[2].selectedOptions[0].value;
-
   let cart = [];
+
+
+
+
+  //function d'enregistrement dans le localStorage
+  function saveCart() {
+    localStorage.setItem("shoppingCart", JSON.stringify(cart));
+  }
+
 
   //******creation classe LineCart et ses methodes******
   let Item = function (name, price, count, idProduct, options) {
@@ -156,18 +167,6 @@ let cartAndLocalStorageProduct = function () {
     this.idProduct = idProduct;
     this.options = options;
   };
-  //function de recuperation du localStorage
-  function loadCart() {
-    if (cart) {
-      cart = JSON.parse(localStorage.getItem("shoppingCart"));
-    }
-  }
-  loadCart();
-
-  //function d'enregistrement dans le localStorage
-  function saveCart() {
-    localStorage.setItem("shoppingCart", JSON.stringify(cart));
-  }
 
   //evenement au clic sur "ajouter au panier"
   btnAddCart.addEventListener("click", function (e) {
@@ -180,27 +179,37 @@ let cartAndLocalStorageProduct = function () {
 
     //ajout d'un objet item au panier
     function addItemToCart(name, price, count, idProduct, options) {
+      //function de recuperation du local storage
 
+      function loadCart() {
+        if (!cart) {
+          cart = [];
+        } else {
+          cart = JSON.parse(localStorage.getItem("shoppingCart"));
+        }
+      }
+      loadCart()
+      saveCart();
+
+      //ajout des items + quantité
       for (let i in cart) {
         if (cart[i].idProduct == idProduct) {
           cart[i].count += count;
-
-          console.log("i" + cart[i].count);
-          console.log("count" + count);
+          console.log(cart[i].count + " produits de ce type dans le panier");
           alert("produit ajouté au panier !")
           saveCart()
-          return; // on sort sans cree de nouvelleobjet (on incremente seulement)
+          return; // on sort sans cree de nouvelle objet (on incremente seulement)
         }
       }
-
       let item = new Item(name, price, count, idProduct, options);
       cart.push(item);
-      alert("produit ajouté au panier !")
       saveCart();
-
+      alert("produit ajouté au panier !")
     }
     addItemToCart(name, price, count, idProduct, options)
     console.log(cart)
     saveCart();
+
   })
+
 }

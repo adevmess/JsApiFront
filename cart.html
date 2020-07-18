@@ -47,22 +47,20 @@
             <!-- recapitulatif -->
 
             <div class="table-responsive mb-5">
-              <table id="productResume" class="table">
-                <thead class="table-dark">
+              <table class="table table-striped">
+                <thead>
                   <tr>
-                    <th>Produit</th>
-                    <th>Quantité</th>
-                    <th>Prix unitaire</th>
-                    <th>Prix par Produit</th>
+                    <th scope="col">Produit</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Prix unitaire</th>
+                    <th scope="col">Sous total</th>
                   </tr>
                 </thead>
-                <tbody class="table-secondary">
+                <tbody id="productResume" class="table">
                   <!-- //template cart.js// -->
 
 
-                  <tr>
-                    <th id="totalCartPrice">Total : 0 € </th>
-                  </tr>
+
                 </tbody>
               </table>
             </div>
@@ -126,8 +124,8 @@
 
     <!-- js perso  -->
 
+    <!-- <script type="text/javascript" src="product.js"></script> -->
     <script type="text/javascript" src="cart.js"></script>
-    <script type="text/javascript" src="product.js"></script>
 </body>
 
 </html>
