@@ -30,10 +30,10 @@ function loadCart() {
 loadCart()
 
 //fonction de transformation du prix en number
-function toNumber(priceString) {
-  let etapeString = priceString.substring(0, cart[0].price.length - 1);
-  return resultToNumber = parseInt(etapeString, 10);
-}
+// function toNumber(priceString) {
+//   let etapeString = priceString.substring(0, cart[0].price.length - 1);
+//   return resultToNumber = parseInt(etapeString, 10);
+// }
 
 // //sous total
 // function subTotal() {
@@ -50,11 +50,11 @@ function toNumber(priceString) {
 // }
 // subTotal()
 
-//
+
 
 //suppression article
 
-//template
+//template Produits
 function recapTemplateProd(cart) {
 
   let productResume = document.querySelector("#productResume");
@@ -83,12 +83,12 @@ function recapTemplateProd(cart) {
   tr.appendChild(btnDelete);
 
 
-
-} //on cree notre template en bouclant sur chaque produit de notre panier[i]
+} //création du template en bouclant sur chaque produit de notre panier[i]
 for (let i = 0; i < cart.length; i++) {
   console.log(cart);
   recapTemplateProd(cart[i]);
 }
+
 
 //template Prix Total
 function recapTemplateTotal() {
@@ -101,41 +101,60 @@ function recapTemplateTotal() {
   trTotal.appendChild(tdTotalCartPrx);
 }
 recapTemplateTotal()
-//ajouter cart ici
 
 
+//enregistre les changement dans le localStorage
 function saveCart() {
   localStorage.setItem("shoppingCart", JSON.stringify(cart));
 }
 
+
+
+//supprimr un produit (pb supprime tjrs le 1er element du )
 let deleteOneP = document.querySelectorAll("#deleteProduct");
 for (i = 0; i < deleteOneP.length; i++) {
   deleteOneP[i].addEventListener("click", function (e) {
-    // let reponse = window.confirm("vouler vous supprimer ce produit ?");
-    // if (!reponse) {
-    // event.preventDefault()
-    // } else {
-    //   //removeItemFromCart(id ou name)    //removes one item decremente la qte et delete si 0
-    function removeItemFromCart(name) {
-      for (i in cart) {
-        if (cart[i].id === name) {
-          cart.splice(i, 1);
-          document.location.reload(true);
-          break
+    let reponse = window.confirm("vouler vous supprimer ce produit ?");
+    if (!reponse) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      function removeItemFromCart() {
+        for (p in cart) {
+          console.log(cart[p].name)
+          if (cart[p].name) {
+            cart.splice(cart[p].name, 1);
+            e.stopPropagation();
+            console.log(e.target);
+            console.log(e.currentTarget);
+            document.location.reload(true);
+            break
+          }
+
         }
+        saveCart()
       }
-      saveCart()
     }
-
     removeItemFromCart();
-
-
-
-
-
-
-    // }
-
-  })
-
+  }, true);
 }
+
+// suppression total du panier
+let deleteP = document.querySelector("#deletePanier");
+
+
+deleteP.addEventListener("click", function (e) {
+  let reponse = window.confirm("vouler vous supprimer le Panier ?");
+  if (!reponse) {
+    e.preventDefault();
+    e.stopPropagation();
+  } else {
+    for (i in cart) {
+      cart.splice(i);
+      e.stopPropagation();
+      document.location.reload(true);
+      break
+    }
+    saveCart()
+  }
+})
