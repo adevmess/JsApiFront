@@ -1,22 +1,3 @@
-// window.onload = function displayCommande() {
-//   let cart = [];
-
-//   //function de recuperation du local storage
-//   if (cart) {
-//     function loadCart() {
-//       cart = JSON.parse(localStorage.getItem("shoppingCart"));
-//       saveCart()
-//     }
-//   }
-//   loadCart();
-//   console.log(cart)
-
-// }
-
-
-
-
-
 // recuperation de notre panier via le localStorage
 let cart = []
 
@@ -29,26 +10,23 @@ function loadCart() {
 }
 loadCart()
 
-//fonction de transformation du prix en number
-// function toNumber(priceString) {
-//   let etapeString = priceString.substring(0, cart[0].price.length - 1);
-//   return resultToNumber = parseInt(etapeString, 10);
-// }
 
-// //sous total
-// function subTotal() {
-//   for (let i = 0; i < cart.length; i++) {
-//     let item = cart[i]
-//     // console.log(item);
-//     let subTotalCart = 0;
-//     subTotalCart += item.count * toNumber(item.price);
-//     console.log(typeof (subTotalCart));
-//     console.log(subTotalCart);
 
-//   }
+//sous total
+function subTotal(c, p) {
+  for (let i = 0; i < cart.length; i++) {
+    let item = cart[i]
+    console.log(item);
+    // console.log(typeof (item.price));
+    let subTotalCart = 0;
+    subTotalCart += (c * p);
+    // console.log(typeof (subTotalCart));
+    console.log(item.name + " : " + subTotalCart);
+    return subTotalCart
+  }
 
-// }
-// subTotal()
+}
+
 
 
 
@@ -71,13 +49,18 @@ function recapTemplateProd(cart) {
   thCount.id = "countOfProd";
   tr.appendChild(thCount);
 
+  let thUnitPrice = document.createElement("td");
+  thUnitPrice.textContent = cart.price;
+  thUnitPrice.id = "subPrice";
+  tr.appendChild(thUnitPrice);
+
   let thsubPrice = document.createElement("td");
-  thsubPrice.textContent = cart.price;
+  thsubPrice.textContent = subTotal(cart.price, cart.count);
   thsubPrice.id = "subPrice";
   tr.appendChild(thsubPrice);
 
   let btnDelete = document.createElement("button");
-  btnDelete.className = "btn my-2 btn-danger btn-sm";
+  btnDelete.className = "btn my-2 mr-3 btn-danger btn-sm";
   btnDelete.innerHTML = "X";
   btnDelete.id = "deleteProduct";
   tr.appendChild(btnDelete);
@@ -121,9 +104,9 @@ for (i = 0; i < deleteOneP.length; i++) {
     } else {
       function removeItemFromCart() {
         for (p in cart) {
-          console.log(cart[p].name)
-          if (cart[p].name) {
-            cart.splice(cart[p].name, 1);
+          console.log(cart[p])
+          if (cart[p]) {
+            cart.splice(cart[p], 1);
             e.stopPropagation();
             console.log(e.target);
             console.log(e.currentTarget);
