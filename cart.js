@@ -17,24 +17,42 @@ function subTotal(c, p) {
   for (let i = 0; i < cart.length; i++) {
     let item = cart[i]
     console.log(item);
-    // console.log(typeof (item.price));
     let subTotalCart = 0;
     subTotalCart += (c * p);
     // console.log(typeof (subTotalCart));
     console.log(item.name + " : " + subTotalCart);
     return subTotalCart
   }
-
 }
 
 
 
+// total
 
-//suppression article
+function tt() {
+  for (let i = 0; i < cart.length; i++) {
+    let g = 0;
+    g += cart[i].price * cart[i].count;
+    return g
+  }
+}
+console.log(tt())
+
+
+//function Prix Total cart
+// let su = document.querySelectorAll('subPrice');
+// for (let i = 0; i < su.length; i++) {
+//   count += su[i].textcontent;
+//   console.log(count)
+
+// }
+
+
+
 
 //template Produits
 function recapTemplateProd(cart) {
-
+  console.log(subTotal());
   let productResume = document.querySelector("#productResume");
   let tr = document.createElement("tr");
   productResume.appendChild(tr);
@@ -51,7 +69,7 @@ function recapTemplateProd(cart) {
 
   let thUnitPrice = document.createElement("td");
   thUnitPrice.textContent = cart.price;
-  thUnitPrice.id = "subPrice";
+  thUnitPrice.id = "unitPrice";
   tr.appendChild(thUnitPrice);
 
   let thsubPrice = document.createElement("td");
@@ -83,14 +101,14 @@ function recapTemplateTotal() {
   tdTotalCartPrx.textContent = "prix Total : ";
   trTotal.appendChild(tdTotalCartPrx);
 }
-recapTemplateTotal()
+recapTemplateTotal();
+
 
 
 //enregistre les changement dans le localStorage
 function saveCart() {
   localStorage.setItem("shoppingCart", JSON.stringify(cart));
 }
-
 
 
 //supprimr un produit (pb supprime tjrs le 1er element du )
@@ -103,7 +121,7 @@ for (i = 0; i < deleteOneP.length; i++) {
       e.stopPropagation();
     } else {
       function removeItemFromCart() {
-        for (p in cart) {
+        for (p = 0; p < cart.length; p++) {
           console.log(cart[p])
           if (cart[p]) {
             cart.splice(cart[p], 1);
@@ -113,7 +131,6 @@ for (i = 0; i < deleteOneP.length; i++) {
             document.location.reload(true);
             break
           }
-
         }
         saveCart()
       }
@@ -124,7 +141,6 @@ for (i = 0; i < deleteOneP.length; i++) {
 
 // suppression total du panier
 let deleteP = document.querySelector("#deletePanier");
-
 
 deleteP.addEventListener("click", function (e) {
   let reponse = window.confirm("vouler vous supprimer le Panier ?");

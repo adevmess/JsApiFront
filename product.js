@@ -1,13 +1,14 @@
-/***conexion a l'API */
-const apiUrl = "http://localhost:3000/api/cameras";
-
-// // recuperation des parametres de l'url (via la proprieté location) afin de detecter la presence d'un id en particulier su la page web en cours (via window)
-
-
 const currentUrl = new URLSearchParams(window.location.search);
 //on recupere la valeur associé a ce parametre (id)
 const id = currentUrl.get("id");
 console.log(id);
+
+/***conexion a l'API */
+const apiUrl = "http://localhost:3000/api/cameras/" + id;
+
+// // recuperation des parametres de l'url (via la proprieté location) afin de detecter la presence d'un id en particulier su la page web en cours (via window)
+
+
 
 
 
@@ -22,26 +23,26 @@ const getDatasCamera = async function () {
 
       /****function recup object dans le array  */
       //renvoi l'objet qui contient comme valeur l'id courant
-      let product = function (data) {
-        return oneCamera = data.find(camera => camera._id === id);
+      // let product = function (data) {
+      //   return oneCamera = data.find(camera => camera._id === id);
 
-      }
-      product(data)
-      console.log(oneCamera);
+      // }
+      // product(data)
+      // console.log(oneCamera);
 
       // notre objet camera cloné en local ( voir response.clone())
-      let cloneOneCamera = Object.assign({}, oneCamera);
-      console.log(cloneOneCamera);
+      // let cloneOneCamera = Object.assign({}, oneCamera);
+      // console.log(cloneOneCamera);
 
       //*****Template pour chaque produit*** */
-      function createtemplateProduct(cloneOneCamera) {
+      function createtemplateProduct(data) {
 
         let globalSection = document.querySelector("section");
 
 
         let generalCard = document.createElement("div");
         generalCard.className = "card mb-3 shadow";
-        generalCard.innerHTML = `<img src ="${cloneOneCamera.imageUrl}" alt="camera" class="card-img">`;
+        generalCard.innerHTML = `<img src ="${data.imageUrl}" alt="camera" class="card-img">`;
         globalSection.appendChild(generalCard);
 
         let cardBody = document.createElement("div");
@@ -50,12 +51,12 @@ const getDatasCamera = async function () {
 
         let cardTitle = document.createElement("h2");
         cardTitle.id = "card-title";
-        cardTitle.textContent = cloneOneCamera.name;
+        cardTitle.textContent = data.name;
         cardBody.appendChild(cardTitle);
 
         let descriptionCam = document.createElement("p");
         descriptionCam.className = "card-text";
-        descriptionCam.textContent = cloneOneCamera.description;
+        descriptionCam.textContent = data.description;
         cardBody.appendChild(descriptionCam);
 
         let choiceLense = document.createElement("div");
@@ -77,15 +78,15 @@ const getDatasCamera = async function () {
 
 
         //****fonction display choix lentiles  */
-        let optionSelected = function (cloneOneCamera) {
-          let lenses = cloneOneCamera.lenses;
+        let optionSelected = function (data) {
+          let lenses = data.lenses;
           for (let i = 0; i < lenses.length; i++) {
             console.log(lenses[i]);
             let option = document.createElement("option");
             formLenseSelect.innerHTML += `<option>${lenses[i]}</option>`;
           }
         }
-        optionSelected(cloneOneCamera)
+        optionSelected(data)
 
         let choiceQuantity = document.createElement("div");
         choiceQuantity.className = "form-group-Quantite mt-3";
@@ -106,20 +107,20 @@ const getDatasCamera = async function () {
         let prix = document.createElement("h3");
         prix.className = "my-auto text-center price";
         prix.id = "priceOfProduct";
-        prix.textContent = cloneOneCamera.price / 100 + "€";
+        prix.textContent = data.price / 100 + "€";
         PriceAndButton.appendChild(prix);
 
         let btnAddToCart = document.createElement('button')
         btnAddToCart.className = "btn btn-dark";
         btnAddToCart.id = "productId";
-        btnAddToCart.innerHTML = `<a href="#?id=${cloneOneCamera._id}">Ajouter au panier</a>`;
+        btnAddToCart.innerHTML = `<a href="#?id=${data._id}">Ajouter au panier</a>`;
         PriceAndButton.appendChild(btnAddToCart);
 
         StorageProduct();
 
 
       }
-      createtemplateProduct(oneCamera)
+      createtemplateProduct(data)
 
 
 
