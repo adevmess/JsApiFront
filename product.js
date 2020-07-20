@@ -1,15 +1,12 @@
-const currentUrl = new URLSearchParams(window.location.search);
+// // recuperation des parametres de l'url (via la proprieté location) afin de detecter la presence d'un id du produit en particulier sur la page web en cours (via window)
+
 //on recupere la valeur associé a ce parametre (id)
+const currentUrl = new URLSearchParams(window.location.search);
 const id = currentUrl.get("id");
 console.log(id);
 
 /***conexion a l'API */
 const apiUrl = "http://localhost:3000/api/cameras/" + id;
-
-// // recuperation des parametres de l'url (via la proprieté location) afin de detecter la presence d'un id en particulier su la page web en cours (via window)
-
-
-
 
 
 const getDatasCamera = async function () {
@@ -20,19 +17,6 @@ const getDatasCamera = async function () {
       console.log("c'est ok");
       console.log(data); // on renvoie un  resultat de l'objet reçu
 
-
-      /****function recup object dans le array  */
-      //renvoi l'objet qui contient comme valeur l'id courant
-      // let product = function (data) {
-      //   return oneCamera = data.find(camera => camera._id === id);
-
-      // }
-      // product(data)
-      // console.log(oneCamera);
-
-      // notre objet camera cloné en local ( voir response.clone())
-      // let cloneOneCamera = Object.assign({}, oneCamera);
-      // console.log(cloneOneCamera);
 
       //*****Template pour chaque produit*** */
       function createtemplateProduct(data) {
@@ -117,12 +101,8 @@ const getDatasCamera = async function () {
         PriceAndButton.appendChild(btnAddToCart);
 
         StorageProduct();
-
-
       }
       createtemplateProduct(data)
-
-
 
     } // else permet de renvoyer le code erreur
     else {
@@ -134,7 +114,7 @@ const getDatasCamera = async function () {
 }
 getDatasCamera();
 
-
+//variables concernant recuperation des infos du produit
 let StorageProduct = function () {
   let btnAddCart = document.querySelector("#productId");
   // recuperation des infos du produit
@@ -146,11 +126,8 @@ let StorageProduct = function () {
   console.log("voici le prix :" + price);
   console.log(typeof (price))
   let idProduct = id;
-
   let options = document.querySelector("#optionProd").children[2].selectedOptions[0].value;
   let cart = [];
-
-
 
 
   //function d'enregistrement dans le localStorage
@@ -159,7 +136,7 @@ let StorageProduct = function () {
   }
 
 
-  //******creation classe LineCart et ses methodes******
+  //function de creation d'objet pour stockakge dans le localStorage
   let Item = function (name, price, count, idProduct, options) {
 
     this.name = name;
@@ -174,14 +151,13 @@ let StorageProduct = function () {
     //empeche le rafraichissement dans la page
     e.preventDefault()
 
-    // recupération de la valeur courane du select 
+    // recupération de la valeur courante du select 
     let count = parseInt(opt.selectedOptions[0].value, 10);
-
 
     //ajout d'un objet item au panier
     function addItemToCart(name, price, count, idProduct, options) {
-      //function de recuperation du local storage
 
+      //function de recuperation du local storage
       function loadCart() {
         if (!cart) {
           cart = [];
@@ -199,7 +175,7 @@ let StorageProduct = function () {
           console.log(cart[i].count + " produits de ce type dans le panier");
           alert("produit ajouté au panier !")
           saveCart()
-          return; // on sort sans cree de nouvelle objet (on incremente seulement)
+          return;
         }
       }
       let item = new Item(name, price, count, idProduct, options);
@@ -210,7 +186,5 @@ let StorageProduct = function () {
     addItemToCart(name, price, count, idProduct, options)
     console.log(cart)
     saveCart();
-
   })
-
 }

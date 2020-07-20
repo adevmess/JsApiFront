@@ -11,99 +11,102 @@ function loadCart() {
 loadCart()
 
 
-
 //sous total
-function subTotal(c, p) {
-  for (let i = 0; i < cart.length; i++) {
-    let item = cart[i]
-    console.log(item);
-    let subTotalCart = 0;
-    subTotalCart += (c * p);
-    // console.log(typeof (subTotalCart));
-    console.log(item.name + " : " + subTotalCart);
-    return subTotalCart
-  }
+function subTotal(carte) {
+  console.log(carte.name + " : " + (carte.count * carte.price));
+  return carte.count * carte.price;
 }
-
-
-
-// total
-
-function tt() {
-  for (let i = 0; i < cart.length; i++) {
-    let g = 0;
-    g += cart[i].price * cart[i].count;
-    return g
-  }
-}
-console.log(tt())
-
-
-//function Prix Total cart
-// let su = document.querySelectorAll('subPrice');
-// for (let i = 0; i < su.length; i++) {
-//   count += su[i].textcontent;
-//   console.log(count)
-
-// }
 
 
 
 
 //template Produits
 function recapTemplateProd(cart) {
-  console.log(subTotal());
+
+
   let productResume = document.querySelector("#productResume");
   let tr = document.createElement("tr");
+
   productResume.appendChild(tr);
 
   let thName = document.createElement("td");
   thName.id = "nameOfProd";
   thName.textContent = cart.name;
+
   tr.appendChild(thName);
 
   let thCount = document.createElement("td");
   thCount.textContent = cart.count;
   thCount.id = "countOfProd";
+
   tr.appendChild(thCount);
 
   let thUnitPrice = document.createElement("td");
   thUnitPrice.textContent = cart.price;
   thUnitPrice.id = "unitPrice";
+
   tr.appendChild(thUnitPrice);
 
   let thsubPrice = document.createElement("td");
-  thsubPrice.textContent = subTotal(cart.price, cart.count);
+  thsubPrice.textContent = subTotal(cart);
   thsubPrice.id = "subPrice";
+
   tr.appendChild(thsubPrice);
 
   let btnDelete = document.createElement("button");
   btnDelete.className = "btn my-2 mr-3 btn-danger btn-sm";
   btnDelete.innerHTML = "X";
-  btnDelete.id = "deleteProduct";
+  btnDelete.id = cart.idProduct;
+
   tr.appendChild(btnDelete);
 
+  let btnDel = document.getElementById(cart.idProduct);
+  console.log(btnDel);
+  // btnDel.addEventListener("click", function () {
+  //   let reponse = window.confirm("vouler vous supprimer le Panier ?");
+  //   if (!reponse) {
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //   } else {
+  //     for (p in cart) {
+  //       cart.splice(p, 1);
+  //       e.stopPropagation();
+  //       document.location.reload(true);
+  //       break
+  //     }
+  //     saveCart()
+  //   }
+  // })
 
-} //création du template en bouclant sur chaque produit de notre panier[i]
+
+  //retour de notre valeur sous Total
+  return subTotal(cart);
+}
+
+var prixTotalPanier = 0;
+
+
+//création du template en bouclant sur chaque produit de notre panier[i]
 for (let i = 0; i < cart.length; i++) {
-  console.log(cart);
-  recapTemplateProd(cart[i]);
+  // console.log(cart);
+  prixTotalPanier += recapTemplateProd(cart[i]);
 }
 
 
-//template Prix Total
-function recapTemplateTotal() {
+//affichage Prix Total 
+{
   let trTotal = document.createElement("tr");
   productResume.appendChild(trTotal);
 
   let tdTotalCartPrx = document.createElement("th");
   tdTotalCartPrx.id = "totalCartPrice";
-  tdTotalCartPrx.textContent = "prix Total : ";
+  tdTotalCartPrx.textContent = "prix Total : " + prixTotalPanier + "€";
+
   trTotal.appendChild(tdTotalCartPrx);
+
+  //rappel du prix total
+  document.querySelector("#rapelPrixTotal").textContent = "prix Total : " + prixTotalPanier + "€";
 }
-recapTemplateTotal();
-
-
 
 //enregistre les changement dans le localStorage
 function saveCart() {
@@ -111,23 +114,20 @@ function saveCart() {
 }
 
 
-//supprimr un produit (pb supprime tjrs le 1er element du )
-let deleteOneP = document.querySelectorAll("#deleteProduct");
+
+
+//supprimr un produit
+let deleteOneP = document.querySelectorAll("#subPrice").NodeList;
 for (i = 0; i < deleteOneP.length; i++) {
   deleteOneP[i].addEventListener("click", function (e) {
     let reponse = window.confirm("vouler vous supprimer ce produit ?");
     if (!reponse) {
-      e.preventDefault();
-      e.stopPropagation();
+      event.preventDefault()
     } else {
-      function removeItemFromCart() {
-        for (p = 0; p < cart.length; p++) {
-          console.log(cart[p])
-          if (cart[p]) {
-            cart.splice(cart[p], 1);
-            e.stopPropagation();
-            console.log(e.target);
-            console.log(e.currentTarget);
+      function removeItemFromCart(name) {
+        for (i in cart) {
+          if (cart[i].id === name) {
+            cart.splice(i, 1);
             document.location.reload(true);
             break
           }
@@ -136,8 +136,9 @@ for (i = 0; i < deleteOneP.length; i++) {
       }
     }
     removeItemFromCart();
-  }, true);
+  })
 }
+
 
 // suppression total du panier
 let deleteP = document.querySelector("#deletePanier");

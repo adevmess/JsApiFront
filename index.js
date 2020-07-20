@@ -9,7 +9,7 @@ const getDatasCamera = async function () {
       console.log("c'est ok");
       console.log(data); // on renvoie un  resultat de l'objet reçu
 
-      //puis on parametre notre fonction de creation d'elements qui sera utilisé par la boucle for
+      //template de chaque produit
       function createtemplateProducts(data) {
 
         let globalSection = document.getElementById("section");
@@ -67,7 +67,7 @@ const getDatasCamera = async function () {
         console.log(btnContinuer); //a enlever 
 
       }
-      // Notre boucle for permet d'iterer sur chaque produit et de creer les elements correspondants en utilsant la fonction precedement definie
+      //boucle de creation du template pour chaque produit
       for (let i = 0; i < data.length; i++) {
         console.log(data);
         createtemplateProducts(data[i]);
