@@ -67,42 +67,55 @@
             </div>
 
             <!-- contact -->
-            <div class="bloc l-bloc">
-              <div class="container bloc-lg">
-                <div class="contact row">
-                  <div class="contact col-sm-12">
-                    <h2>Vos informations de livraison</h2>
-                    <div class="form-group mt-5">
-                      <label for="nom">Nom</label>
-                      <input type="text" class="form-control" id="name" placeholder="Mess" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="nom"> Prénom</label>
-                      <input type="text" class="form-control" id="surname" placeholder="Ahmed" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="adresse"> Adresse</label>
-                      <input type="text" class="form-control" id="address" placeholder="2,Rue du Développement"
-                        required>
-                    </div>
-                    <div class="form-group">
-                      <label for="ville">ville</label>
-                      <input type="text" class="form-control" id="city" placeholder="Paris" required>
-                    </div>
-                    <div class="form-group">
+            <form class="needs-validation" novalidate>
+              <div class="bloc l-bloc">
+                <div class="container bloc-lg">
+
+                  <div class="contact row">
+                    <div class="contact col-sm-12 col-md-6 mx-auto">
+
+                      <h2>Vos informations de livraison</h2>
+                      <div class="form-group mt-5">
+                        <label for="lastName">Nom</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Mess" required>
+                        <small id="lastNameErrorMsg" class="form-text" aria-live="polite">
+                        </small>
+                      </div>
                       <div class="form-group">
-                        <label for="email">email</label>
-                        <input type="email" class="form-control" id="email" placeholder="adevmess@gmail.com" required>
+                        <label for="firstName"> Prénom</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Ahmed" required>
+                        <small id="firstNameErrorMsg" class="form-text " aria-live="polite">
+                        </small>
+                      </div>
+                      <div class="form-group">
+                        <label for="address"> Adresse</label>
+                        <input type="text" class="form-control" id="address" placeholder="2,Rue du Développement"
+                          required>
+                        <small id="addressErrorMsg" class="form-text" aria-live="polite">
+                        </small>
+                      </div>
+                      <div class="form-group">
+                        <label for="city">ville</label>
+                        <input type="text" class="form-control" id="city" placeholder="Paris" required>
+                      </div>
+                      <small id="cityErrorMsg" class="form-text" aria-live="polite">
+                      </small>
+                      <div class="form-group">
+                        <div class="form-group">
+                          <label for="email">email</label>
+                          <input type="email" class="form-control" id="email" placeholder="adevmess@gmail.com" required>
+                          <small id="emailErrorMsg" class="form-text" aria-live="polite">
+                          </small>
+                        </div>
                       </div>
                     </div>
-                    </form>
                   </div>
                 </div>
               </div>
-            </div>
+            </form>
             <!-- contact END -->
             <h3 id="rapelPrixTotal">410€</h3>
-            <a href="confirmation.html" class="btn btn-success">Commander</a>
+            <button id="btnCommander" href=#" class="btn btn-success" type="submit">Commander</button>
           </div>
         </div>
       </div>

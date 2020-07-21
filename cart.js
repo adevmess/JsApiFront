@@ -62,21 +62,17 @@ function recapTemplateProd(cart) {
 
   let btnDel = document.getElementById(cart.idProduct);
   console.log(btnDel);
-  // btnDel.addEventListener("click", function () {
-  //   let reponse = window.confirm("vouler vous supprimer le Panier ?");
-  //   if (!reponse) {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //   } else {
-  //     for (p in cart) {
-  //       cart.splice(p, 1);
-  //       e.stopPropagation();
-  //       document.location.reload(true);
-  //       break
-  //     }
-  //     saveCart()
-  //   }
-  // })
+  btnDel.addEventListener("click", function () {
+    let reponse = window.confirm("vouler vous supprimer le Panier ?");
+    if (!reponse) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      localStorage.removeItem(btnDel);
+      saveCart()
+      location.reload(true);
+    }
+  })
 
 
   //retour de notre valeur sous Total
@@ -116,28 +112,28 @@ function saveCart() {
 
 
 
-//supprimr un produit
-let deleteOneP = document.querySelectorAll("#subPrice").NodeList;
-for (i = 0; i < deleteOneP.length; i++) {
-  deleteOneP[i].addEventListener("click", function (e) {
-    let reponse = window.confirm("vouler vous supprimer ce produit ?");
-    if (!reponse) {
-      event.preventDefault()
-    } else {
-      function removeItemFromCart(name) {
-        for (i in cart) {
-          if (cart[i].id === name) {
-            cart.splice(i, 1);
-            document.location.reload(true);
-            break
-          }
-        }
-        saveCart()
-      }
-    }
-    removeItemFromCart();
-  })
-}
+// //supprimr un produit
+// let deleteOneP = document.querySelectorAll("#subPrice");
+// for (i = 0; i < deleteOneP.length; i++) {
+//   deleteOneP[i].addEventListener("click", function (e) {
+//     let reponse = window.confirm("vouler vous supprimer ce produit ?");
+//     if (!reponse) {
+//       event.preventDefault()
+//     } else {
+//       function removeItemFromCart(name) {
+//         for (i in cart) {
+//           if (cart[i].id === name) {
+//             cart.splice(i, 1);
+//             document.location.reload(true);
+//             break
+//           }
+//         }
+//         saveCart()
+//       }
+//     }
+//     removeItemFromCart();
+//   })
+// }
 
 
 // suppression total du panier
@@ -158,3 +154,129 @@ deleteP.addEventListener("click", function (e) {
     saveCart()
   }
 })
+
+
+
+//data a envoyer au serveur :
+//(product[id des produits commandés], 
+//contact{ infos valides du formulaire })
+let infosServeur = {
+  products: [],
+  contact: {}
+
+};
+let recupIdProductCart = function () {
+  for (i = 0; i < cart.length; i++) {
+    let recupIdProd = cart[i]["idProduct"]
+    console.log(recupIdProd)
+    infosServeur.products.push(recupIdProd);
+    console.log(infosServeur.products)
+  }
+}
+recupIdProductCart()
+// champs du formulaire
+const firstName = document.querySelector("#firstName");
+const lastName = document.querySelector("#lastName");
+const address = document.querySelector("#address");
+const city = document.querySelector("#city");
+const email = document.querySelector("#email");
+const btnCommander = document.querySelector("#btnCommander");
+
+//msg d'erreur du formulaire
+const firstNameError = document.querySelector("#firstNameErrorMsg");
+const lastNameError = document.querySelector("#lastNameErrorMsg");
+const addressError = document.querySelector("#addressErrorMsg");
+const cityError = document.querySelector("#cityErrorMsg");
+const emailError = document.querySelector("#emailErrorMsg");
+
+
+
+//fonction de verfication (lastname ,firstName, city)
+function verifName(champ, msgErreur) {
+  //accepte seulement des lettres, apostrophes, tirets et espaces
+  //pas de tiret en debut et fin de champ
+  //majuscule seulement au debut
+  // accepte champ >=2 et <=25
+  const regexNom = /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+([-'\s][a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+)?$/;
+
+
+  //si format incorrect(regex formatnomValid), champ trop court ou trop long
+  if ((regexNom.test(champ.value) == false) || (champ.value.length < 2 || champ.value.length > 25)) {
+    msgErreur.textContent = "Format incorrect";
+    msgErreur.style.color = "red";
+    return false;
+  } else {
+    msgErreur.textContent = "";
+    return true;
+  }
+}
+
+//fonction de verfication (email)
+function verifEmail(champ, msgErreur) {
+  // Correspond à une chaîne de la forme bbb@yyy.zzz
+  const regexEmail = /.+@.+\..+/;
+
+
+  if (!regexEmail.test(champ.value)) {
+    msgErreur.textContent = "Adresse invalide";
+    msgErreur.style.color = "red";
+    return false;
+  } else {
+    msgErreur.textContent = "";
+    return true;
+  }
+}
+
+//fonction de verfication (address)
+function verifAddress(champ, msgErreur) {
+  // doit contenir des chiffres, pas de caracteres spéciaux;
+  const regexNumber = /[0-9]/;
+  const regexSpeciaux = /[$&+:;=?@#|'<>.°^*()%!"{}_"`¨~]/;
+
+
+  if (regexSpeciaux.test(champ.value)) {
+    msgErreur.textContent = "Format incorrect";
+    msgErreur.style.color = "red";
+    return false;
+  }
+  if (!regexNumber.test(champ.value)) {
+    msgErreur.textContent = "Format incorrect";
+    msgErreur.style.color = "red";
+    return false;
+  } else {
+    msgErreur.textContent = "";
+    return true;
+  }
+}
+
+//verification du formaulaire lors du l'évenement
+btnCommander.addEventListener("click", function () {
+  verifName(firstName, firstNameError);
+  verifName(lastName, lastNameError);
+  verifName(city, cityError);
+  verifEmail(email, emailError);
+  verifAddress(address, addressError);
+  // verifCity(city, cityError);
+
+  if (verifName(firstName, firstNameError) &&
+    verifName(lastName, lastNameError) &&
+    verifName(city, cityError) &&
+    verifEmail(email, emailError) && verifAddress(address, addressError)) {
+    console.log("les datas du formulaires sont valides");
+
+    //envoi des data valide du formulaire dans objet contact
+    let formulaireDataOk = {
+      firstNme: firstName.value,
+      lastName: firstName.value,
+      address: firstName.value,
+      city: firstName.value,
+      email: firstName.value,
+    }
+    infosServeur.contact = formulaireDataOk;
+    console.log(formulaireDataOk);
+    console.log(infosServeur.contact);
+    console.log(infosServeur);
+
+
+  }
+});

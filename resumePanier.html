@@ -69,36 +69,39 @@
               <div class="container bloc-lg">
                 <div class="contact row">
                   <div class="contact col-sm-12">
-                    <h2>Vos informations de livraison</h2>
-                    <div class="form-group mt-5">
-                      <label for="nom">Nom</label>
-                      <input type="text" class="form-control" id="nom" placeholder="Mess" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="nom"> Prénom</label>
-                      <input type="text" class="form-control" id="nom" placeholder="Ahmed" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="adresse"> Adresse</label>
-                      <input type="text" class="form-control" id="nom" placeholder="2,Rue du Développement" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="ville">ville</label>
-                      <input type="text" class="form-control" id="ville" placeholder="Paris" required>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-group">
-                        <label for="email">email</label>
-                        <input type="email" class="form-control" id="email" placeholder="adevmess@gmail.com" required>
+                    <form class="needs-validation" novalidate>
+                      <h2>Vos informations de livraison</h2>
+                      <div class="form-group mt-5">
+                        <label for="nom">Nom</label>
+                        <input name="lastName" type="text" class="form-control" id="nom" placeholder="Mess" required>
                       </div>
-                    </div>
+                      <div class="form-group">
+                        <label for="nom"> Prénom</label>
+                        <input name="firstName" type="text" class="form-control" id="nom" placeholder="Ahmed" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="adresse"> Adresse</label>
+                        <input name="address" type="text" class="form-control" id="nom"
+                          placeholder="2,Rue du Développement" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="ville">ville</label>
+                        <input name="city" type="text" class="form-control" id="ville" placeholder="Paris" required>
+                      </div>
+                      <div class="form-group">
+                        <div class="form-group">
+                          <label for="email">email</label>
+                          <input name="email" type="email" class="form-control" id="email"
+                            placeholder="adevmess@gmail.com" required>
+                        </div>
+                      </div>
                     </form>
                   </div>
                 </div>
               </div>
             </div>
             <!-- contact END -->
-            <h3>410€</h3>
+            <h3></h3>
             <a href="confirmation.html" class="btn btn-success">Commander</a>
           </div>
         </div>
