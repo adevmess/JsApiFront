@@ -321,7 +321,10 @@ btnCommander.addEventListener("click", function () {
 
 
           //redirection vers la page de confirmation de commande
-          window.location = `confirmation.html?id=${data["orderId"]}?price=${PrixConfirmation}`;
+          window.location = `confirmation.html?id=${data["orderId"]}&price=${PrixConfirmation}`;
+
+
+
 
         } else {
           console.error('reponse serveur : ', response.status);
@@ -331,5 +334,6 @@ btnCommander.addEventListener("click", function () {
       }
     }
     postdataCart();
+    localStorage.clear();
   }
 });

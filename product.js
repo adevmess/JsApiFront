@@ -95,9 +95,9 @@ const getDatasCamera = async function () {
         PriceAndButton.appendChild(prix);
 
         let btnAddToCart = document.createElement('button')
-        btnAddToCart.className = "btn btn-dark";
+        btnAddToCart.className = "btn btn-success";
         btnAddToCart.id = "productId";
-        btnAddToCart.innerHTML = `<a href="#?id=${data._id}">Ajouter au panier</a>`;
+        btnAddToCart.innerHTML = " Ajouter au panier";
         PriceAndButton.appendChild(btnAddToCart);
 
         StorageProduct();
