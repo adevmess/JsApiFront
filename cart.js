@@ -79,12 +79,12 @@ function recapTemplateProd(cart) {
   return subTotal(cart);
 }
 
-var prixTotalPanier = 0;
+let prixTotalPanier = 0;
 
 
 //création du template en bouclant sur chaque produit de notre panier[i]
 for (let i = 0; i < cart.length; i++) {
-  // console.log(cart);
+  console.log(cart);
   prixTotalPanier += recapTemplateProd(cart[i]);
 }
 
@@ -109,6 +109,10 @@ function saveCart() {
   localStorage.setItem("shoppingCart", JSON.stringify(cart));
 }
 
+// //enregistrement du formulaire dans localStorage
+// function saveDataFormulaire() {
+//   localStorage.setItem("formulaire", JSON.stringify(infosServeur.contact));
+// }
 
 
 
@@ -156,15 +160,17 @@ deleteP.addEventListener("click", function (e) {
 })
 
 
-
-//data a envoyer au serveur :
-//(product[id des produits commandés], 
-//contact{ infos valides du formulaire })
+//variable de stockage des data a envoyer au serveur :
+// => (product[id des produits commandés], 
+// => contact{ infos valides du formulaire })
 let infosServeur = {
   products: [],
   contact: {}
 
 };
+
+
+//recuperation des id de chaque produit du cart
 let recupIdProductCart = function () {
   for (i = 0; i < cart.length; i++) {
     let recupIdProd = cart[i]["idProduct"]
@@ -174,6 +180,8 @@ let recupIdProductCart = function () {
   }
 }
 recupIdProductCart()
+
+
 // champs du formulaire
 const firstName = document.querySelector("#firstName");
 const lastName = document.querySelector("#lastName");
@@ -182,13 +190,13 @@ const city = document.querySelector("#city");
 const email = document.querySelector("#email");
 const btnCommander = document.querySelector("#btnCommander");
 
+
 //msg d'erreur du formulaire
 const firstNameError = document.querySelector("#firstNameErrorMsg");
 const lastNameError = document.querySelector("#lastNameErrorMsg");
 const addressError = document.querySelector("#addressErrorMsg");
 const cityError = document.querySelector("#cityErrorMsg");
 const emailError = document.querySelector("#emailErrorMsg");
-
 
 
 //fonction de verfication (lastname ,firstName, city)
@@ -211,6 +219,7 @@ function verifName(champ, msgErreur) {
   }
 }
 
+
 //fonction de verfication (email)
 function verifEmail(champ, msgErreur) {
   // Correspond à une chaîne de la forme bbb@yyy.zzz
@@ -226,6 +235,7 @@ function verifEmail(champ, msgErreur) {
     return true;
   }
 }
+
 
 //fonction de verfication (address)
 function verifAddress(champ, msgErreur) {
@@ -249,34 +259,77 @@ function verifAddress(champ, msgErreur) {
   }
 }
 
-//verification du formaulaire lors du l'évenement
+
+//verification du formulaire lors de l'évenement
 btnCommander.addEventListener("click", function () {
   verifName(firstName, firstNameError);
   verifName(lastName, lastNameError);
   verifName(city, cityError);
   verifEmail(email, emailError);
   verifAddress(address, addressError);
-  // verifCity(city, cityError);
 
+
+  //verification des retour (si true )
   if (verifName(firstName, firstNameError) &&
     verifName(lastName, lastNameError) &&
     verifName(city, cityError) &&
     verifEmail(email, emailError) && verifAddress(address, addressError)) {
     console.log("les datas du formulaires sont valides");
 
-    //envoi des data valide du formulaire dans objet contact
-    let formulaireDataOk = {
-      firstNme: firstName.value,
-      lastName: firstName.value,
-      address: firstName.value,
-      city: firstName.value,
-      email: firstName.value,
+
+    //envoi des data valides du formulaire dans notre objet
+    const formulaireDataOk = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      address: address.value,
+      city: city.value,
+      email: email.value,
+
     }
+
+
+    //verification des data et stringification avant le post vers le serveur
     infosServeur.contact = formulaireDataOk;
     console.log(formulaireDataOk);
     console.log(infosServeur.contact);
     console.log(infosServeur);
+    let finalDataIdAndContact = JSON.stringify(infosServeur)
+    console.log(finalDataIdAndContact)
 
 
+    // post de l'objet "contact" vers API
+    const postApiUrl = "http://localhost:3000/api/cameras/order";
+
+    const postdataCart = async function () {
+      try {
+        let response = await fetch(postApiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json" //type de data envoyé au serveur
+          },
+          body: finalDataIdAndContact //body stringifié
+        });
+        if (response.ok) {
+          let data = await response.json()
+          console.log("c'est ok");
+          console.log(data); //affiche l'objet retourné par notre serveur
+          let idConfirmation = (data["orderId"])
+          console.log(idConfirmation); //
+
+          let PrixConfirmation = (prixTotalPanier)
+          console.log(PrixConfirmation); //
+
+
+          //redirection vers la page de confirmation de commande
+          window.location = `confirmation.html?id=${data["orderId"]}?price=${PrixConfirmation}`;
+
+        } else {
+          console.error('reponse serveur : ', response.status);
+        }
+      } catch (e) { //catch permet de capturer l'erreur
+        console.log(e) //le console.log de (e) affiche l'erreur en question
+      }
+    }
+    postdataCart();
   }
 });
