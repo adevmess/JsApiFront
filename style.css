@@ -109,4 +109,8 @@ footer {
     width: 13rem;
     overflow: hidden;
   }
+
+  #recap {
+    font-size: 0.8rem;
+  }
 }

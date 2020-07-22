@@ -6,7 +6,7 @@ const getDatasCamera = async function () {
     let response = await fetch(apiUrl);
     if (response.ok) { //verifie si statut de type 200 ou autre
       let data = await response.json() //on attend la conversion du json en objet
-      console.log("c'est ok");
+      console.log("La demande d'un produit à l'API à fonctionné, voici les infos :");
       console.log(data); // on renvoie un  resultat de l'objet reçu
 
       //template de chaque produit
@@ -55,21 +55,20 @@ const getDatasCamera = async function () {
         subDivCol3.className = "col-lg-3 my-auto text-center";
         subDivRow.appendChild(subDivCol3);
 
+
         let prix = document.createElement("h3");
         prix.className = "price";
-        prix.textContent = data.price / 100 + "€";
+        prix.textContent = `${data.price / 100}€`;
         subDivCol3.appendChild(prix);
 
         let btnContinuer = document.createElement('div')
         btnContinuer.className = "btn btn-dark";
         btnContinuer.innerHTML = `<a href="product.html?id=${data._id}">Continuer</a>`;
         subDivCol3.appendChild(btnContinuer);
-        console.log(btnContinuer); //a enlever 
 
       }
-      //boucle de creation du template pour chaque produit
+      //boucle de creation du template pour chaque valeur de chaque produit
       for (let i = 0; i < data.length; i++) {
-        console.log(data);
         createtemplateProducts(data[i]);
       }
     } // else permet de renvoyer le code erreur

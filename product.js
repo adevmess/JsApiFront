@@ -1,32 +1,30 @@
-// // recuperation des parametres de l'url (via la proprieté location) afin de detecter la presence d'un id du produit en particulier sur la page web en cours (via window)
-
-//on recupere la valeur associé a ce parametre (id)
+//recuperation des parametres de l'url, detection de l' id du produit sur la page web courante (via window)
 const currentUrl = new URLSearchParams(window.location.search);
 const id = currentUrl.get("id");
-console.log(id);
+console.log(`on recupere bien l'ID courant : ${id}`);
 
 /***conexion a l'API */
 const apiUrl = "http://localhost:3000/api/cameras/" + id;
 
 
-const getDatasCamera = async function () {
+const getDatasOneCamera = async function () {
   try {
     let response = await fetch(apiUrl);
     if (response.ok) { //verifie si statut de type 200 ou autre
-      let data = await response.json() //on attend la conversion du json en objet
-      console.log("c'est ok");
-      console.log(data); // on renvoie un  resultat de l'objet reçu
+      let dataOneCamera = await response.json() //on attend la conversion du json en objet
+      console.log("La demande vers l'API à fonctionné, voici les infos :");
+      console.log(dataOneCamera); // on renvoie un  resultat de l'objet reçu
 
 
       //*****Template pour chaque produit*** */
-      function createtemplateProduct(data) {
+      function createTemplateProduct(dataOneCamera) {
 
         let globalSection = document.querySelector("section");
 
 
         let generalCard = document.createElement("div");
         generalCard.className = "card mb-3 shadow";
-        generalCard.innerHTML = `<img src ="${data.imageUrl}" alt="camera" class="card-img">`;
+        generalCard.innerHTML = `<img src ="${dataOneCamera.imageUrl}" alt="camera" class="card-img">`;
         globalSection.appendChild(generalCard);
 
         let cardBody = document.createElement("div");
@@ -35,12 +33,12 @@ const getDatasCamera = async function () {
 
         let cardTitle = document.createElement("h2");
         cardTitle.id = "card-title";
-        cardTitle.textContent = data.name;
+        cardTitle.textContent = dataOneCamera.name;
         cardBody.appendChild(cardTitle);
 
         let descriptionCam = document.createElement("p");
         descriptionCam.className = "card-text";
-        descriptionCam.textContent = data.description;
+        descriptionCam.textContent = dataOneCamera.description;
         cardBody.appendChild(descriptionCam);
 
         let choiceLense = document.createElement("div");
@@ -54,23 +52,23 @@ const getDatasCamera = async function () {
         choiceLense.appendChild(formLense);
 
 
-
         let formLenseSelect = document.createElement("select");
         formLenseSelect.className = "choiceLenses custom-select my-1 mr-sm-2";
         formLenseSelect.innerHTML += "<option 'selected'>Lentille d'origine</option>";
         choiceLense.appendChild(formLenseSelect);
 
 
-        //****fonction display choix lentiles  */
-        let optionSelected = function (data) {
-          let lenses = data.lenses;
+        //****fonction display choix lentiles  et implémentation dans le template*/
+        let optionSelected = function (dataOneCamera) {
+          let lenses = dataOneCamera.lenses;
           for (let i = 0; i < lenses.length; i++) {
-            console.log(lenses[i]);
-            let option = document.createElement("option");
+            console.log(`la boucle renvoie bien l'option du produit : ${lenses[i]}`);
+            document.createElement("option");
             formLenseSelect.innerHTML += `<option>${lenses[i]}</option>`;
           }
         }
-        optionSelected(data)
+        optionSelected(dataOneCamera)
+
 
         let choiceQuantity = document.createElement("div");
         choiceQuantity.className = "form-group-Quantite mt-3";
@@ -91,7 +89,7 @@ const getDatasCamera = async function () {
         let prix = document.createElement("h3");
         prix.className = "my-auto text-center price";
         prix.id = "priceOfProduct";
-        prix.textContent = data.price / 100 + "€";
+        prix.textContent = `${dataOneCamera.price / 100} €`;
         PriceAndButton.appendChild(prix);
 
         let btnAddToCart = document.createElement('button')
@@ -102,7 +100,7 @@ const getDatasCamera = async function () {
 
         StorageProduct();
       }
-      createtemplateProduct(data)
+      createTemplateProduct(dataOneCamera)
 
     } // else permet de renvoyer le code erreur
     else {
@@ -112,19 +110,21 @@ const getDatasCamera = async function () {
     console.log(e) //le console.log de (e) affiche l'erreur en question
   }
 }
-getDatasCamera();
+getDatasOneCamera();
 
-//variables concernant recuperation des infos du produit
+
+//recuperation des infos du produit suite au choix du client et stockage dans le localStorage
+
+
+//variables 
 let StorageProduct = function () {
   let btnAddCart = document.querySelector("#productId");
-  // recuperation des infos du produit
   let name = document.querySelector("#card-title").textContent;
-  let priceString = document.querySelector("#priceOfProduct").textContent;
-  let pr = (priceString.substring(0, priceString.length - 1));
-  let price = parseInt(pr, 10);
-  let opt = document.querySelector("#productQuantity").children[1];
-  console.log("voici le prix :" + price);
-  console.log(typeof (price))
+  let priceString1 = document.querySelector("#priceOfProduct").textContent;
+  let priceString2 = (priceString1.substring(0, priceString1.length - 1));
+  let price = parseInt(priceString2, 10);
+  let count1 = document.querySelector("#productQuantity").children[1];
+  console.log(`le prix est bien converti en number : ${typeof (price)}`)
   let idProduct = id;
   let options = document.querySelector("#optionProd").children[2].selectedOptions[0].value;
   let cart = [];
@@ -148,16 +148,13 @@ let StorageProduct = function () {
 
   //evenement au clic sur "ajouter au panier"
   btnAddCart.addEventListener("click", function (e) {
-    //empeche le rafraichissement dans la page
-    e.preventDefault()
+    e.preventDefault() //empeche le rafraichissement dans la page
 
-    // recupération de la valeur courante du select 
-    let count = parseInt(opt.selectedOptions[0].value, 10);
+    let count = parseInt(count1.selectedOptions[0].value, 10); // recupération de la valeur courante du select (de la quantité)
 
-    //ajout d'un objet item au panier
+    //creation et ajout d'un objet item au panier
     function addItemToCart(name, price, count, idProduct, options) {
-
-      //function de recuperation du local storage
+      //function de recuperation du local storage et verification si objet present
       function loadCart() {
         if (!cart) {
           cart = [];
@@ -165,10 +162,10 @@ let StorageProduct = function () {
           cart = JSON.parse(localStorage.getItem("shoppingCart"));
         }
       }
-      loadCart()
-      saveCart();
+      loadCart();
 
-      //ajout des items + quantité
+
+      // incrémentation de la quantité si meme ID
       for (let i in cart) {
         if (cart[i].idProduct == idProduct) {
           cart[i].count += count;
@@ -178,12 +175,18 @@ let StorageProduct = function () {
           return;
         }
       }
+
+
+      // sinon creation d'un nouvel objet puis enregistrement dans le panier (cart)
       let item = new Item(name, price, count, idProduct, options);
       cart.push(item);
       saveCart();
       alert("produit ajouté au panier !")
     }
+
+
     addItemToCart(name, price, count, idProduct, options)
+    console.log("Le panier contient les objets :");
     console.log(cart)
     saveCart();
   })

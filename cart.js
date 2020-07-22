@@ -12,16 +12,33 @@ loadCart()
 
 
 //sous total
-function subTotal(carte) {
-  console.log(carte.name + " : " + (carte.count * carte.price));
-  return carte.count * carte.price;
+function subTotal(element) {
+  console.log(element.name + " : " + (element.count * element.price));
+  return element.count * element.price;
 }
 
+// suppression total du panier
+let deleteP = document.querySelector("#deletePanier");
 
+deleteP.addEventListener("click", function (e) {
+  let reponse = window.confirm("vouler vous supprimer le Panier ?");
+  if (!reponse) {
+    e.preventDefault();
+    e.stopPropagation();
+  } else {
+    for (i in cart) {
+      cart.splice(i);
+      e.stopPropagation();
+      document.location.reload(true);
+      break
+    }
+    saveCart()
+  }
+})
 
 
 //template Produits
-function recapTemplateProd(cart) {
+function recapTemplateCommande(cart) {
 
 
   let productResume = document.querySelector("#productResume");
@@ -79,17 +96,18 @@ function recapTemplateProd(cart) {
   return subTotal(cart);
 }
 
-let prixTotalPanier = 0;
-
 
 //création du template en bouclant sur chaque produit de notre panier[i]
+//et incrementation du prix total
+let prixTotalPanier = 0;
+
 for (let i = 0; i < cart.length; i++) {
   console.log(cart);
-  prixTotalPanier += recapTemplateProd(cart[i]);
+  prixTotalPanier += recapTemplateCommande(cart[i]);
 }
 
 
-//affichage Prix Total 
+//  affichage du  Prix Total 
 {
   let trTotal = document.createElement("tr");
   productResume.appendChild(trTotal);
@@ -108,12 +126,6 @@ for (let i = 0; i < cart.length; i++) {
 function saveCart() {
   localStorage.setItem("shoppingCart", JSON.stringify(cart));
 }
-
-// //enregistrement du formulaire dans localStorage
-// function saveDataFormulaire() {
-//   localStorage.setItem("formulaire", JSON.stringify(infosServeur.contact));
-// }
-
 
 
 // //supprimr un produit
@@ -140,24 +152,6 @@ function saveCart() {
 // }
 
 
-// suppression total du panier
-let deleteP = document.querySelector("#deletePanier");
-
-deleteP.addEventListener("click", function (e) {
-  let reponse = window.confirm("vouler vous supprimer le Panier ?");
-  if (!reponse) {
-    e.preventDefault();
-    e.stopPropagation();
-  } else {
-    for (i in cart) {
-      cart.splice(i);
-      e.stopPropagation();
-      document.location.reload(true);
-      break
-    }
-    saveCart()
-  }
-})
 
 
 //variable de stockage des data a envoyer au serveur :
@@ -201,14 +195,14 @@ const emailError = document.querySelector("#emailErrorMsg");
 
 //fonction de verfication (lastname ,firstName, city)
 function verifName(champ, msgErreur) {
-  //accepte seulement des lettres, apostrophes, tirets et espaces
+  //accepte seulement les lettres, apostrophes, tirets et espaces
   //pas de tiret en debut et fin de champ
   //majuscule seulement au debut
   // accepte champ >=2 et <=25
   const regexNom = /^[a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+([-'\s][a-zA-ZéèîïÉÈÎÏ][a-zéèêàçîï]+)?$/;
 
 
-  //si format incorrect(regex formatnomValid), champ trop court ou trop long
+  //si format incorrect : false, si format correct : true
   if ((regexNom.test(champ.value) == false) || (champ.value.length < 2 || champ.value.length > 25)) {
     msgErreur.textContent = "Format incorrect";
     msgErreur.style.color = "red";
@@ -225,7 +219,7 @@ function verifEmail(champ, msgErreur) {
   // Correspond à une chaîne de la forme bbb@yyy.zzz
   const regexEmail = /.+@.+\..+/;
 
-
+  //si format incorrect : false, si format correct : true
   if (!regexEmail.test(champ.value)) {
     msgErreur.textContent = "Adresse invalide";
     msgErreur.style.color = "red";
@@ -243,7 +237,7 @@ function verifAddress(champ, msgErreur) {
   const regexNumber = /[0-9]/;
   const regexSpeciaux = /[$&+:;=?@#|'<>.°^*()%!"{}_"`¨~]/;
 
-
+  //si format incorrect : false, si format correct : true
   if (regexSpeciaux.test(champ.value)) {
     msgErreur.textContent = "Format incorrect";
     msgErreur.style.color = "red";
@@ -260,7 +254,7 @@ function verifAddress(champ, msgErreur) {
 }
 
 
-//verification du formulaire lors de l'évenement
+//verification du formulaire lors de l'évenement et post final vers serveur
 btnCommander.addEventListener("click", function () {
   verifName(firstName, firstNameError);
   verifName(lastName, lastNameError);
@@ -269,7 +263,7 @@ btnCommander.addEventListener("click", function () {
   verifAddress(address, addressError);
 
 
-  //verification des retour (si true )
+  //verification des Booleans ( true permet de lancer le reste du processus )
   if (verifName(firstName, firstNameError) &&
     verifName(lastName, lastNameError) &&
     verifName(city, cityError) &&
@@ -284,7 +278,6 @@ btnCommander.addEventListener("click", function () {
       address: address.value,
       city: city.value,
       email: email.value,
-
     }
 
 
@@ -313,18 +306,17 @@ btnCommander.addEventListener("click", function () {
           let data = await response.json()
           console.log("c'est ok");
           console.log(data); //affiche l'objet retourné par notre serveur
-          let idConfirmation = (data["orderId"])
-          console.log(idConfirmation); //
 
-          let PrixConfirmation = (prixTotalPanier)
-          console.log(PrixConfirmation); //
+          //recupération des infos nécéssaires à la confirmation
+          let idConfirmation = (data["orderId"]) //id
+          console.log(idConfirmation);
+
+          let PrixConfirmation = (prixTotalPanier) //prix
+          console.log(PrixConfirmation);
 
 
-          //redirection vers la page de confirmation de commande
+          //redirection vers la page de confirmation de commande (envoie des infos nécéssaires dans l'URL)
           window.location = `confirmation.html?id=${data["orderId"]}&price=${PrixConfirmation}`;
-
-
-
 
         } else {
           console.error('reponse serveur : ', response.status);
