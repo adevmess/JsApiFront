@@ -75,55 +75,20 @@ function recapTemplateCommande(cart) {
 
   tr.appendChild(thsubPrice);
 
-  let btnDelete = document.createElement("button");
-  btnDelete.className = "btn my-2 mr-3 btn-danger btn-sm";
-  btnDelete.innerHTML = "X";
-  btnDelete.id = cart.idProduct;
-
-  tr.appendChild(btnDelete);
-
-
-  //delete One product
-  let btnDel = document.getElementById(cart.idProduct);
-  console.log(btnDel);
-  btnDel.addEventListener("click", function () {
-    let reponse = window.confirm("vouler vous supprimer le Panier ?");
-    if (!reponse) {
-      e.preventDefault();
-      e.stopPropagation();
-    } else {
-      function removeItemFromCart(name) {
-        for (i in cart) {
-          if (cart[i].name === name) {
-            cart.splice(i, 1);
-            document.location.reload(true);
-            break
-          }
-        }
-        saveCart()
-      }
-      removeItemFromCart();
-    }
-  })
-
-
-
-  //retour de notre valeur sous Total
-  return subTotal(cart);
 }
 
 
-//création du template en bouclant sur chaque produit de notre panier[i]
-//et incrementation du prix total
+// initialisation de la variable concernant le prix total
 let prixTotalPanier = 0;
 
+
+//affichage de tous les produits du panier
 for (let i = 0; i < cart.length; i++) {
   console.log(cart);
-  prixTotalPanier += recapTemplateCommande(cart[i]);
+  recapTemplateCommande(cart[i]); // affichage d'un produit en particulier
+  prixTotalPanier += subTotal(cart[i]); //calcul du prix total via chaque sous total de chaque produit
+
 }
-
-
-
 
 
 //  affichage du Prix Total dans tableau
@@ -140,33 +105,6 @@ for (let i = 0; i < cart.length; i++) {
   //rappel du prix total bas de formulaire
   document.querySelector("#rapelPrixTotal").textContent = "prix Total : " + prixTotalPanier + "€";
 }
-
-
-
-
-// //supprimr un produit
-// let deleteOneP = document.querySelectorAll("#subPrice");
-// for (i = 0; i < deleteOneP.length; i++) {
-//   deleteOneP[i].addEventListener("click", function (e) {
-//     let reponse = window.confirm("vouler vous supprimer ce produit ?");
-//     if (!reponse) {
-//       event.preventDefault()
-//     } else {
-//       function removeItemFromCart(name) {
-//         for (i in cart) {
-//           if (cart[i].id === name) {
-//             cart.splice(i, 1);
-//             document.location.reload(true);
-//             break
-//           }
-//         }
-//         saveCart()
-//       }
-//     }
-//     removeItemFromCart();
-//   })
-// }
-
 
 
 

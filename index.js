@@ -10,7 +10,7 @@ const getDatasCamera = async function () {
       console.log(data); // on renvoie un  resultat de l'objet reçu
 
       //template de chaque produit
-      function createtemplateProducts(data) {
+      function createTemplateProducts(data) {
 
         let globalSection = document.getElementById("section");
 
@@ -69,7 +69,7 @@ const getDatasCamera = async function () {
       }
       //boucle de creation du template pour chaque valeur de chaque produit
       for (let i = 0; i < data.length; i++) {
-        createtemplateProducts(data[i]);
+        createTemplateProducts(data[i]);
       }
     } // else permet de renvoyer le code erreur
     else {
