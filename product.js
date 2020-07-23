@@ -162,6 +162,7 @@ let StorageProduct = function () {
           cart = JSON.parse(localStorage.getItem("shoppingCart"));
         }
       }
+
       loadCart();
 
 
@@ -186,7 +187,7 @@ let StorageProduct = function () {
 
 
     addItemToCart(name, price, count, idProduct, options)
-    console.log("Le panier contient les objets :");
+    console.log("Le panier contient les objets suivants :");
     console.log(cart)
     saveCart();
   })

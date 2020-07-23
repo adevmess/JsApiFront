@@ -9,6 +9,13 @@ function loadCart() {
   }
 }
 loadCart()
+console.log(`Voici ce que contient le panier : `)
+console.log(cart);
+
+//enregistre les changement dans le localStorage
+function saveCart() {
+  localStorage.setItem("shoppingCart", JSON.stringify(cart));
+}
 
 
 //sous total
@@ -39,8 +46,6 @@ deleteP.addEventListener("click", function (e) {
 
 //template Produits
 function recapTemplateCommande(cart) {
-
-
   let productResume = document.querySelector("#productResume");
   let tr = document.createElement("tr");
 
@@ -77,6 +82,8 @@ function recapTemplateCommande(cart) {
 
   tr.appendChild(btnDelete);
 
+
+  //delete One product
   let btnDel = document.getElementById(cart.idProduct);
   console.log(btnDel);
   btnDel.addEventListener("click", function () {
@@ -85,11 +92,20 @@ function recapTemplateCommande(cart) {
       e.preventDefault();
       e.stopPropagation();
     } else {
-      localStorage.removeItem(btnDel);
-      saveCart()
-      location.reload(true);
+      function removeItemFromCart(name) {
+        for (i in cart) {
+          if (cart[i].name === name) {
+            cart.splice(i, 1);
+            document.location.reload(true);
+            break
+          }
+        }
+        saveCart()
+      }
+      removeItemFromCart();
     }
   })
+
 
 
   //retour de notre valeur sous Total
@@ -107,7 +123,10 @@ for (let i = 0; i < cart.length; i++) {
 }
 
 
-//  affichage du  Prix Total 
+
+
+
+//  affichage du Prix Total dans tableau
 {
   let trTotal = document.createElement("tr");
   productResume.appendChild(trTotal);
@@ -118,14 +137,11 @@ for (let i = 0; i < cart.length; i++) {
 
   trTotal.appendChild(tdTotalCartPrx);
 
-  //rappel du prix total
+  //rappel du prix total bas de formulaire
   document.querySelector("#rapelPrixTotal").textContent = "prix Total : " + prixTotalPanier + "€";
 }
 
-//enregistre les changement dans le localStorage
-function saveCart() {
-  localStorage.setItem("shoppingCart", JSON.stringify(cart));
-}
+
 
 
 // //supprimr un produit
@@ -160,7 +176,6 @@ function saveCart() {
 let infosServeur = {
   products: [],
   contact: {}
-
 };
 
 
@@ -168,9 +183,10 @@ let infosServeur = {
 let recupIdProductCart = function () {
   for (i = 0; i < cart.length; i++) {
     let recupIdProd = cart[i]["idProduct"]
-    console.log(recupIdProd)
     infosServeur.products.push(recupIdProd);
+    console.log("voici les ID envoyés vers products : ")
     console.log(infosServeur.products)
+
   }
 }
 recupIdProductCart()
@@ -263,7 +279,7 @@ btnCommander.addEventListener("click", function () {
   verifAddress(address, addressError);
 
 
-  //verification des Booleans ( true permet de lancer le reste du processus )
+  //verification des Boolean ( true permet de lancer le reste du processus )
   if (verifName(firstName, firstNameError) &&
     verifName(lastName, lastNameError) &&
     verifName(city, cityError) &&
@@ -283,10 +299,12 @@ btnCommander.addEventListener("click", function () {
 
     //verification des data et stringification avant le post vers le serveur
     infosServeur.contact = formulaireDataOk;
-    console.log(formulaireDataOk);
+    console.log("Voici le resultat de l'objet contact : ");
     console.log(infosServeur.contact);
+    console.log("objet 'info serveur' avant stringification : ");
     console.log(infosServeur);
     let finalDataIdAndContact = JSON.stringify(infosServeur)
+    console.log("Voici le resultat stringifié: ");
     console.log(finalDataIdAndContact)
 
 
@@ -304,7 +322,7 @@ btnCommander.addEventListener("click", function () {
         });
         if (response.ok) {
           let data = await response.json()
-          console.log("c'est ok");
+          console.log("Le post vers le srveur à fonctionné, voici les infos recupéres :");
           console.log(data); //affiche l'objet retourné par notre serveur
 
           //recupération des infos nécéssaires à la confirmation
